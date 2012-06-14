@@ -6,7 +6,7 @@ This is handy for people that want to integrate avatars with Minecraft skins. Ju
 Want to display a neat little playerlist on your website? No problem! Just download the serverlist folder and upload it on to your website. Integrating the list with your website can be a mess depending on your software, but you should be able to do it with some tweaking (you can always email me if it doesn't work: vic@kiwi.la).
 First up you'll need to make sure that you're running PHP. If you're working on an html page, it's safe to change the extention to .php. Now insert this code where you want the playerlist:
 
-<?php
+```<?php
 # You can use this snippet to integrate the serverlist into your existing website.
 # You can also restyle the text and other content inside the playerlist by putting this (including php tags) inside a div.
 # Make sure you are pasting this in a file ending on .php (If it's html, it is most likely safe to change that to php as your browser will read the html part as html)
@@ -19,6 +19,6 @@ $contents = implode("", $playerlist);
 
 // Echo it out
 echo $contents;
-?>
+?>```
 
 You also need to install minequery on your Minecraft server and open the port 25566.
