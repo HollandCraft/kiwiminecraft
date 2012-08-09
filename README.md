@@ -1,25 +1,36 @@
-Kiwiboom's Minecraft Scripts
-====================
+# kiwiminecraft
+Avatar and playerlist script
 
 ## Avatar
-This is handy for people that want to integrate avatars with Minecraft skins. Just upload the 'avatar.php' file to your server. Now you can navigate to the avatar file with your browser. An example avatar call looks like this: 'avatar.php?p=kiwiboom&size=100'. In this particular example the script will get kiwiboom's skin, cut out the head and resize it too 100x100 pixels. You can also call the script from our server by using this url: 'http://kiwi.la/projects/minecraft/avatar.php?p=kiwiboom&size=100'.
+This is handy for people who want to integrate avatars with the faces of Minecraft skins. Just upload the 'avatar.php' file to your server. Now you can navigate to the avatar file with your browser. An example avatar call looks like this: 'avatar.php?p=kiwiboom&size=100'. In this particular example the script will get kiwiboom's skin, cut out the head and resize it too 100x100 pixels. You can also call the script from our server by using this url: 'http://kiwi.la/projects/minecraft/avatar.php?p=kiwiboom&size=100'.
 
 ## Serverlist
 Want to display a neat little playerlist on your website? No problem! Just download the serverlist folder and upload it on to your website. Integrating the list with your website can be a mess depending on your software, but you should be able to do it with some tweaking (you can always email me if it doesn't work: vic@kiwi.la).
-First up you'll need to make sure that you're running PHP. If you're working on an html page, it's safe to change the extention to .php. Now insert this code where you want the playerlist:
+First up you'll need to make sure that you're running PHP. If you're working on an HTML page, it's safe to change the extention to .php. Now insert this code where you want the playerlist:
 
 ```
 <?php
-# You can use this snippet to integrate the serverlist into your existing website.
-# You can also restyle the text and other content inside the playerlist by putting this (including php tags) inside a div.
-# Make sure you are pasting this in a file ending on .php (If it's html, it is most likely safe to change that to php as your browser will read the html part as html)
-
+// Use curl
+function curl($url) {
+    if (!function_exists('curl_init')){ 
+        die('CURL is not installed!');
+    }
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $output = curl_exec($ch);
+    curl_close($ch);
+    return $output;
+}
+ 
 // Getting contents of playerlistfile
-$playerlist = file_get_contents('http://path/to/serverlistfolder/?server=serverip&port=serverport&avatar=http://path/to/avatar.php');
+$playerlist = curl('http://path/to/serverlistfolder/?server=serverip&port=serverport&avatar=http://path/to/avatar.php');
 
-// Echo it out
+// Display
 echo $playerlist;
 ?>
 ```
+You can also find 2 working examples in the examples directory. The example called 'split.php' is somewhat harder to setup, but is way better if you want to fully integrate it in your site layout.
 
-You also need to install minequery on your Minecraft server and open the nessecairy ports.
+## Minequery
+You need to install Minequery and open the nessecairy ports (the default Minequery port is 25566).
