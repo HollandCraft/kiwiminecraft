@@ -83,9 +83,6 @@ include('list_pictures.php');
 # Linebreak
 echo "<div style=\"height:3px;\"></div>";
 
-# Powered by
-echo "<span style=\"font-size: 8px;\">Online list powered, coded and hosted by <a href=\"http://kiwi.la\">kiwiboom</a>.<span/>";
-
 ?>
 </body>
 </html>
