@@ -1,5 +1,4 @@
 <?php
-
 $size = isset($_GET['size']) ? (($_GET['size']<250) ? (($_GET['size']>8) ? $_GET['size'] : 8) : 250) : 48;
 $user = isset($_GET['p']) ? $_GET['p'] : 'char';
 
