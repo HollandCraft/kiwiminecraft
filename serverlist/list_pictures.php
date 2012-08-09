@@ -62,9 +62,6 @@ $server = $_GET['server'];
 $serverport = $_GET['port'];
 $avatar = $_GET['avatar'];
 
-// Update server port 
-$serverport = $serverport + 1;
-
 // Check if the port exists
 if($_GET['port']) {
 	// Query to the minequery class with supplied port
