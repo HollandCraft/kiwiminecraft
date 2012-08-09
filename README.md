@@ -1,5 +1,5 @@
 # kiwiminecraft
-Avatar and playerlist script
+Avatar and playerlist script    
 ![License](http://i.creativecommons.org/l/by-sa/3.0/88x31.png)    
 
 ## Avatar
