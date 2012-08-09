@@ -1,13 +1,15 @@
 <?php
 // Require the minequery class
-require('minequery.class.php');
+if(DIRECTORY != "index") {
+	require_once("../api/minequery.class.php");
+}
 
 // Die if no parameters
 if(!$_GET['server']) {
 	die("Missing parameter \"server\"!");
 }
 
-// Get the server and port
+// Support text-only calls
 $server = $_GET['server'];
 $serverport = $_GET['port'];
 
@@ -22,9 +24,9 @@ else {
 }
 
 // Saving responses
-$count = $list[playerCount];
-$max = $list[maxPlayers];
-$ms = round($list[latency]);
+$count = $list['playerCount'];
+$max = $list['maxPlayers'];
+$ms = round($list['latency']);
 
 echo "<span style=\"font-size: 15px;\">There are <span style='color: red;'>$count</span> out of <span style='color: red;'>$max</span> players online with a loading time of <span style='color: red;'>$ms</span> ms.</span>";
 ?>
