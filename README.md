@@ -30,7 +30,7 @@ $playerlist = curl('http://path/to/kiwiminecraftfolder/?server=serverip&port=ser
 echo $playerlist;
 ?>
 ```
-The snippet below is a more recommended way you can add the server list to your website:
+The snippet below adds the serverlist to your site as well. I recommend this one if you want tight integration with your website.
 ```php
 <?php
 # In this script we are using the two content files seperately
