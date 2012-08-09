@@ -28,5 +28,10 @@ $count = $list['playerCount'];
 $max = $list['maxPlayers'];
 $ms = round($list['latency']);
 
-echo "<span style=\"font-size: 15px;\">There are <span style='color: red;'>$count</span> out of <span style='color: red;'>$max</span> players online with a loading time of <span style='color: red;'>$ms</span> ms.</span>";
+if($count == 0) {
+	echo "<span style=\"font-size: 15px;\">There are <span style='color: red;'>0</span> out of <span style='color: red;'>$max</span> players online with a loading time of <span style='color: red;'>$ms</span> ms.</span>";
+}
+else {
+	echo "<span style=\"font-size: 15px;\">There are <span style='color: red;'>$count</span> out of <span style='color: red;'>$max</span> players online with a loading time of <span style='color: red;'>$ms</span> ms.</span>";
+}
 ?>
