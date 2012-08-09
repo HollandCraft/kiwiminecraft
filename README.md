@@ -15,14 +15,11 @@ First up you'll need to make sure that you're running PHP. If you're working on 
 # Make sure you are pasting this in a file ending on .php (If it's html, it is most likely safe to change that to php as your browser will read the html part as html)
 
 // Getting contents of playerlistfile
-$playerlist = file('http://path/to/serverlistfolder/?server=serverip&port=serverport&avatar=http://kiwi.la/minecraft/avatar.php'); # Replace the avatar location with your self-hosted one for faster loading
-
-// Implode the playerlist for easy access to file
-$contents = implode("", $playerlist);
+$playerlist = file_get_contents('http://path/to/serverlistfolder/?server=serverip&port=serverport&avatar=http://kiwi.la/minecraft/avatar.php'); # Replace the avatar location with your self-hosted one for faster loading
 
 // Echo it out
-echo $contents;
+echo $playerlist;
 ?>
 ```
 
-You also need to install minequery on your Minecraft server and open the port 25566.
+You also need to install minequery on your Minecraft server and open the nessecairy ports.
