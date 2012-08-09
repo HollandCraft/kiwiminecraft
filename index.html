@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Kiwiminecraft by kiwiboom</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/kiwiboom/kiwiminecraft">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/kiwiboom/kiwiminecraft/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/kiwiboom/kiwiminecraft/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Kiwiminecraft</h1>
+          <p>Minecraft scripts for your community website</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/kiwiboom">kiwiboom</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>kiwiminecraft</h1>
+
+<p>Avatar and playerlist script<br><img src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" alt="License"></p>
+
+<h2>Avatar</h2>
+
+<p>This is handy for people who want to integrate avatars with the faces of Minecraft skins. Just upload the 'avatar.php' file to your server. Now you can navigate to the avatar file with your browser. An example avatar call looks like this: 'avatar.php?p=kiwiboom&amp;size=100'. In this particular example the script will get kiwiboom's skin, cut out the head and resize it too 100x100 pixels. You can also call the script from our server by using this url: '<a href="http://kiwi.la/projects/minecraft/avatar.php?p=kiwiboom&amp;size=100">http://kiwi.la/projects/minecraft/avatar.php?p=kiwiboom&amp;size=100</a>'.</p>
+
+<h2>Serverlist</h2>
+
+<p>Want to display a neat little playerlist on your website? No problem! Just download the serverlist folder and upload it on to your website. Integrating the list with your website can be a mess depending on your software, but you should be able to do it with some tweaking (you can always email me if it doesn't work: <a href="mailto:vic@kiwi.la">vic@kiwi.la</a>).
+First up you'll need to make sure that you're running PHP. If you're working on an HTML page, it's safe to change the extention to .php. Now insert this code where you want the playerlist:</p>
+
+<div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="c1">// Use curl</span>
+<span class="k">function</span> <span class="nf">curl</span><span class="p">(</span><span class="nv">$url</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">function_exists</span><span class="p">(</span><span class="s1">'curl_init'</span><span class="p">)){</span> 
+        <span class="k">die</span><span class="p">(</span><span class="s1">'CURL is not installed!'</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">();</span>
+    <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_URL</span><span class="p">,</span> <span class="nv">$url</span><span class="p">);</span>
+    <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
+    <span class="nv">$output</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+    <span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nv">$output</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Getting contents of playerlistfile</span>
+<span class="nv">$playerlist</span> <span class="o">=</span> <span class="nx">curl</span><span class="p">(</span><span class="s1">'http://path/to/kiwiminecraftfolder/?server=serverip&amp;port=serverport&amp;avatar=http://path/to/avatar.php'</span><span class="p">);</span>
+
+<span class="c1">// Display</span>
+<span class="k">echo</span> <span class="nv">$playerlist</span><span class="p">;</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+<p>The snippet below adds the serverlist to your site as well. I recommend this one if you want tight integration with your website.</p>
+
+<div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="c1"># In this script we are using the two content files seperately</span>
+<span class="c1"># If this doesn't work, check out the one.php file in this folder</span>
+
+<span class="c1">// Use curl</span>
+<span class="k">function</span> <span class="nf">curl</span><span class="p">(</span><span class="nv">$url</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">function_exists</span><span class="p">(</span><span class="s1">'curl_init'</span><span class="p">)){</span> 
+        <span class="k">die</span><span class="p">(</span><span class="s1">'CURL is not installed!'</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">();</span>
+    <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_URL</span><span class="p">,</span> <span class="nv">$url</span><span class="p">);</span>
+    <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
+    <span class="nv">$output</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+    <span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nv">$output</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Getting contents of playerlistfile</span>
+<span class="nv">$text</span> <span class="o">=</span> <span class="nx">curl</span><span class="p">(</span><span class="s1">'http://path/to/kiwiminecraftfolder/content/text.php?server=serverip&amp;port=serverport'</span><span class="p">);</span>
+<span class="nv">$heads</span> <span class="o">=</span> <span class="nx">curl</span><span class="p">(</span><span class="s1">'http://path/to/kiwiminecraftfolder/content/heads.php?server=serverip&amp;port=serverport&amp;avatar=http://path/to/avatar.php'</span><span class="p">);</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">&lt;html&gt;</span>
+<span class="x">&lt;head&gt;</span>
+<span class="x">    &lt;title&gt;Split test&lt;/title&gt;</span>
+<span class="x">    &lt;style type="text/css"&gt;</span>
+<span class="x">        #text {</span>
+<span class="x">            font-family: Helvetica;</span>
+<span class="x">        }</span>
+
+<span class="x">        #heads {</span>
+<span class="x">            margin-top: 10px;</span>
+<span class="x">        }</span>
+<span class="x">    &lt;/style&gt;</span>
+<span class="x">&lt;/head&gt;</span>
+<span class="x">&lt;body&gt;</span>
+<span class="x">    &lt;div id="text"&gt;</span>
+<span class="x">        </span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$text</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">    &lt;/div&gt;</span>
+
+<span class="x">    &lt;div id="heads"&gt;</span>
+<span class="x">        </span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$heads</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">    &lt;/div&gt;</span>
+<span class="x">&lt;/body&gt;</span>
+<span class="x">&lt;/html&gt;</span>
+</pre></div>
+
+<p>You can also find 2 working examples in the examples directory. The example called 'split.php' is somewhat harder to setup, but is way better if you want to fully integrate it in your site layout.</p>
+
+<h2>Minequery</h2>
+
+<p>You need to install Minequery and open the nessecairy ports (the default Minequery port is 25566).</p>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
