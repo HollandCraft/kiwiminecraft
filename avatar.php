@@ -2,6 +2,43 @@
 $size = isset($_GET['size']) ? (($_GET['size']<250) ? (($_GET['size']>8) ? $_GET['size'] : 8) : 250) : 48;
 $user = isset($_GET['p']) ? $_GET['p'] : 'char';
 
+// Function for checking data
+function checkMonth($epoch) {
+	$time = time();
+	if($epoch > time()+1814400) { # Checks if tested time is bigger than 3 weeks
+		return true;
+	}
+}
+
+// Function for new avatar
+function savenewavatar($user, $size) {
+	// get skin
+	$skin = get_avatar($user);
+
+	// Display
+	$im = imagecreatefromstring($skin);
+	$av = imagecreatetruecolor($size,$size);
+	imagecopyresized($av,$im,0,0,8,8,$size,$size,8,8);    // Face
+	imagecopyresized($av,$im,0,0,40,8,$size,$size,8,8);   // Accessories
+	imagealphablending($av, false);
+	imagesavealpha($av, true);
+	header('Content-type: image/png');
+	imagepng($av);
+	
+	// Save image
+	$im = imagecreatefromstring($skin);
+	$save = imagecreatetruecolor(100,100);
+	imagecopyresized($save,$im,0,0,8,8,100,100,8,8);    // Face
+	imagecopyresized($save,$im,0,0,40,8,100,100,8,8);   // Accessories
+	imagealphablending($save, false);
+	imagesavealpha($save, true);
+	save($save, "cache/$user.png", $user);
+	
+	// Destroy
+	imagedestroy($im);
+	imagedestroy($av);
+}
+
 // Check if avatar has been cached
 $base = dirname(__FILE__)."/";
 if(file_exists("$base/cache/$user.png")) {
@@ -14,7 +51,17 @@ if(file_exists("$base/cache/$user.png")) {
 	imagepng($av);
 	imagedestroy($im);
 	imagedestroy($av);
-	exit();
+	
+	// Check for oldness
+	$myFile = "$base/cache/data/$user.log";
+	$fh = fopen($myFile, 'r');
+	$theData = fread($fh, filesize($myFile));
+	fclose($fh);
+	
+	// Check month
+	if(checkMonth($theData)) {
+		savenewavatar($user, $size);
+	}
 }
 
 // get the skin from amazon server with curl and return the avatar value
@@ -39,33 +86,19 @@ function get_avatar($user = 'char') {
 	return $output;
 }
 
-function save($image, $dir) {
+function save($image, $dir, $user) {
 	$base = dirname(__FILE__)."/";
 	imagepng($image, $base.$dir);
+
+	// Write to data
+	$logLocation = $base."cache/data/$user.log";
+	$fh = fopen($logLocation, 'w');
+	$stringData = time();
+	fwrite($fh, $stringData);
+	fclose($fh);
+	exit();
 }
 
-// get skin
-$skin = get_avatar($user);
-
-// display skin on screen
-$im = imagecreatefromstring($skin);
-$av = imagecreatetruecolor($size,$size);
-imagecopyresized($av,$im,0,0,8,8,$size,$size,8,8);    // Face
-imagecopyresized($av,$im,0,0,40,8,$size,$size,8,8);   // Accessories
-imagealphablending($av, false);
-imagesavealpha($av, true);
-header('Content-type: image/png');
-imagepng($av);
-
-// Save image
-$save = imagecreatetruecolor(100,100);
-imagecopyresized($save,$im,0,0,8,8,100,100,8,8);    // Face
-imagecopyresized($save,$im,0,0,40,8,100,100,8,8);   // Accessories
-imagealphablending($save, false);
-imagesavealpha($save, true);
-save($save, "cache/$user.png");
-
-// Destroy
-imagedestroy($im);
-imagedestroy($av);
+// Save avatar
+savenewavatar($user, $size);
 ?>
