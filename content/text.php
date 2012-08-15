@@ -1,4 +1,6 @@
 <?php
+error_reporting(0);
+
 // Require the minequery class
 if(DIRECTORY != "index") {
 	require_once("../api/minequery.class.php");
