@@ -2,6 +2,9 @@
 Avatar and playerlist script    
 ![License](http://i.creativecommons.org/l/by-sa/3.0/88x31.png)    
 
+## Installation
+Download the files and place them in a folder on your server. Open config.php and customize the script to your liking. If you set caching to true, make sure to chmod the `cache` and `cache/data` folders to `777`.
+
 ## Avatar
 This is handy for people who want to integrate avatars with the faces of Minecraft skins. Just upload the 'avatar.php' file to your server. Now you can navigate to the avatar file with your browser. An example avatar call looks like this: 'avatar.php?p=kiwiboom&size=100'. In this particular example the script will get kiwiboom's skin, cut out the head and resize it too 100x100 pixels. You can also call the script from our server by using this url: 'http://kiwi.la/projects/minecraft/avatar.php?p=kiwiboom&size=100'.
 
