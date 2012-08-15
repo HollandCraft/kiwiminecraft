@@ -1,6 +1,31 @@
 <?php
+error_reporting(0);
 $size = isset($_GET['size']) ? (($_GET['size']<250) ? (($_GET['size']>8) ? $_GET['size'] : 8) : 250) : 48;
 $user = isset($_GET['p']) ? $_GET['p'] : 'char';
+
+// Require config
+if(file_exists('config.php')) {
+	require_once('config.php');
+}
+
+if(file_exists('config.php') && CACHING === true) {
+	function save($image, $dir, $user) {
+		$base = dirname(__FILE__)."/";
+		imagepng($image, $base.$dir);
+
+		// Write to data
+		$logLocation = $base."cache/data/$user.log";
+		$fh = fopen($logLocation, 'w');
+		$stringData = time();
+		fwrite($fh, $stringData);
+		fclose($fh);
+		exit();
+	}
+}
+else {
+	function save($image, $dir, $user) {
+	}	
+}
 
 // Function for checking data
 function checkMonth($epoch) {
@@ -25,14 +50,17 @@ function savenewavatar($user, $size) {
 	header('Content-type: image/png');
 	imagepng($av);
 	
-	// Save image
-	$im = imagecreatefromstring($skin);
-	$save = imagecreatetruecolor(100,100);
-	imagecopyresized($save,$im,0,0,8,8,100,100,8,8);    // Face
-	imagecopyresized($save,$im,0,0,40,8,100,100,8,8);   // Accessories
-	imagealphablending($save, false);
-	imagesavealpha($save, true);
-	save($save, "cache/$user.png", $user);
+	// Save file if set in config
+	if(file_exists('config.php') && CACHING === true) {
+		// Save image
+		$im = imagecreatefromstring($skin);
+		$save = imagecreatetruecolor(100,100);
+		imagecopyresized($save,$im,0,0,8,8,100,100,8,8);    // Face
+		imagecopyresized($save,$im,0,0,40,8,100,100,8,8);   // Accessories
+		imagealphablending($save, false);
+		imagesavealpha($save, true);
+		save($save, "cache/$user.png", $user);
+	}
 	
 	// Destroy
 	imagedestroy($im);
@@ -41,7 +69,7 @@ function savenewavatar($user, $size) {
 
 // Check if avatar has been cached
 $base = dirname(__FILE__)."/";
-if(file_exists("$base/cache/$user.png")) {
+if(file_exists('config.php') && CACHING === true && file_exists("$base/cache/$user.png")) {
 	$im = imagecreatefrompng("$base/cache/$user.png");
 	$av = imagecreatetruecolor($size, $size);
 	imagealphablending($av, false);
@@ -84,19 +112,6 @@ function get_avatar($user = 'char') {
 		$output = base64_decode($output);
 	}
 	return $output;
-}
-
-function save($image, $dir, $user) {
-	$base = dirname(__FILE__)."/";
-	imagepng($image, $base.$dir);
-
-	// Write to data
-	$logLocation = $base."cache/data/$user.log";
-	$fh = fopen($logLocation, 'w');
-	$stringData = time();
-	fwrite($fh, $stringData);
-	fclose($fh);
-	exit();
 }
 
 // Save avatar

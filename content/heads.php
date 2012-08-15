@@ -1,10 +1,11 @@
 <?php
 error_reporting(0);
 
-//Require the minequery class
+// Require the minequery class
 if(DIRECTORY != "index") {
 	require_once("../api/minequery.class.php");
 }
+require_once('../config.php');
 
 // Die if no parameters
 if(!$_GET['server']) {
@@ -30,6 +31,7 @@ else {
 $playerlist = $list['playerList'];
 $count = $list['playerCount'];
 ?>
+<?php if(FADING === true): ?>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
 <script>
 	var total = <?php echo $count; ?>;
@@ -41,13 +43,23 @@ $count = $list['playerCount'];
 		}
 	}
 </script>
+<?php endif; ?>
 <?php
 // Check amount of players
-echo "<div id=\"head\" style=\"visibility: hidden;\">";
+if(FADING === true) {
+	$onload = "onload=\"addOne();\"";
+	$visibility = "style=\"visibility: hidden;\"";
+}
+else {
+	$onload = "";
+	$visibility = "";
+}
+
+echo "<div id=\"head\" $visibility >";
 if($count != 0) {
 	// Display faces
 	foreach ($playerlist as $value) {
-		echo '<img onload="addOne();" name="'.$value.'" style="-webkit-border-radius: 1.9px; -moz-border-radius: 1.9px; border-radius: 1.9px; border: 1px solid black; margin-right: 3px; margin-bottom: 2px;" height="32px" width="32px" title="'.$value.'" alt="'.$value.'" src="'.$avatar.'?p='.$value.'&size=32" />';
+		echo "<img $onload name=\"$value\" style=\"-webkit-border-radius: 1.9px; -moz-border-radius: 1.9px; border-radius: 1.9px; border: 1px solid black; margin-right: 3px; margin-bottom: 2px;\" height=\"32px\" width=\"32px\" title=\"$value\" alt=\"$value\" src=\"$avatar?p=$value&size=32\" />";
 	}
 }
 else {
