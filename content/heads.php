@@ -1,4 +1,5 @@
 <?php
+// Disable errors
 error_reporting(0);
 
 // Require the minequery class
