@@ -23,7 +23,8 @@ if(file_exists('config.php') && CACHING === true) {
 	}
 }
 else {
-	function save($image, $dir, $user) {
+	function save() {
+		return true;
 	}	
 }
 
